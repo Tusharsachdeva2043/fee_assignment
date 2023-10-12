@@ -1,147 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard with LocalStorage</title>
-    
-  <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f7f7f7;
-        margin: 0;
-        padding: 0;
-    }
-    .dashboard {
-        display: flex;
-        justify-content: space-around;
-        margin: 20px;
-        background: linear-gradient(to bottom, #2980b9, #3498db); /* Gradient background */
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
-    .widget {
-        border: 1px solid #ccc;
-        padding: 20px;
-        margin: 10px;
-        flex: 1;
-        background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-    }
-    button {
-        margin-top: 10px;
-        padding: 10px 20px;
-        background: linear-gradient(to bottom, #2ecc71, #27ae60); /* Gradient button background */
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    button:hover {
-        background: linear-gradient(to bottom, #27ae60, #219049); /* Gradient button hover background */
-    }
-    .delete-button {
-        color: red;
-        cursor: pointer;
-    }
-    ul {
-        list-style: none;
-        padding: 0;
-    }
-    li {
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-</style>
-
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Search</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="dashboard">
-        <div class="widget">
-            <h2>Add Data</h2>
-            <input type="text" id="dataInput" placeholder="Enter data">
-            <button onclick="addData()">Add</button>
-        </div>
-        <div class="widget">
-            <h2>Stored Data</h2>
-            <ul id="dataList"></ul>
-        </div>
+  <header>
+    <h1>Movie Search</h1>
+    <form id="search-form">
+      <input type="text" id="search-input" placeholder="Search for a movie">
+      <button type="submit">Search</button>
+    </form>
+    <div id="favorites-container">
+      <button id="favorites-button">&#9734;</button>
+      <div id="favorites-list"></div>
     </div>
-
-    <script>
-        // Function to add data to localStorage
-        function addData() {
-            const dataInput = document.getElementById('dataInput');
-            const data = dataInput.value;
-            
-            if (data) {
-                // Retrieve existing data from localStorage
-                const existingData = localStorage.getItem('dashboardData') ? JSON.parse(localStorage.getItem('dashboardData')) : [];
-                
-                // Add the new data
-                existingData.push(data);
-                
-                // Store the updated data in localStorage
-                localStorage.setItem('dashboardData', JSON.stringify(existingData));
-                
-                // Clear the input field
-                dataInput.value = '';
-                
-                // Update the displayed data
-                displayData();
-            }
-        }
-
-        // Function to delete data item
-        function deleteData(index) {
-            const existingData = localStorage.getItem('dashboardData') ? JSON.parse(localStorage.getItem('dashboardData')) : [];
-            
-            // Remove the item at the specified index
-            existingData.splice(index, 1);
-            
-            // Update the stored data in localStorage
-            localStorage.setItem('dashboardData', JSON.stringify(existingData));
-            
-            // Update the displayed data
-            displayData();
-        }
-
-        // Function to display stored data
-        function displayData() {
-            const dataList = document.getElementById('dataList');
-            
-            // Retrieve data from localStorage
-            const storedData = localStorage.getItem('dashboardData');
-            
-            if (storedData) {
-                const dataArr = JSON.parse(storedData);
-                dataList.innerHTML = '';
-                
-                // Populate the list with stored data
-                dataArr.forEach((item, index) => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = `${index + 1}. ${item}`;
-                    
-                    // Create a delete button for each item
-                    const deleteButton = document.createElement('span');
-                    deleteButton.textContent = 'Delete';
-                    deleteButton.className = 'delete-button';
-                    deleteButton.onclick = () => deleteData(index);
-                    
-                    listItem.appendChild(deleteButton);
-                    dataList.appendChild(listItem);
-                });
-            }
-        }
-
-        // Initial display of stored data
-        displayData();
-    </script>
+  </header>
+  <div id="movie-results"></div>
+  <div id="modal">
+    <div id="modal-content">
+      <button id="close-modal-button">&times;</button>
+      <div id="movie-details"></div>
+    </div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
